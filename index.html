@@ -6,56 +6,99 @@
     <title>¡Feliz Cumpleaños Máximo!</title>
     <style>
         body { margin: 0; background-color: #050505; color: white; font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        canvas { position: absolute; top: 0; left: 0; }
+        canvas { position: absolute; top: 0; left: 0; z-index: 1; }
         
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        #start-btn { padding: 20px 50px; font-size: 1.8rem; background: #ff4d4d; color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 0 30px #ff4d4d; transition: 0.3s; z-index: 101; }
-        #start-btn:hover { transform: scale(1.1); background: #ff2222; }
-        
-        /* Estilos de la Carta */
-        .card { position: relative; z-index: 10; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); padding: 30px; border-radius: 30px; text-align: center; border: 2px solid rgba(255, 77, 77, 0.5); box-shadow: 0 0 40px rgba(0,0,0,0.5); max-width: 400px; display: none; animation: fadeIn 2s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        #start-btn { padding: 20px 50px; font-size: 1.5rem; background: #ff4d4d; color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 0 30px #ff4d4d; z-index: 101; }
 
-        /* Estilo para la imagen de Máximo */
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 4px solid #ff4d4d;
-            object-fit: cover;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
+        /* Contenedor de la Carta */
+        .card-container {
+            position: relative;
+            z-index: 10;
+            width: 85%;
+            max-width: 350px;
+            min-height: 450px;
+            display: none;
         }
 
-        h1 { color: #ff4d4d; font-size: 2.2rem; margin: 10px 0; text-shadow: 2px 2px 10px rgba(255, 77, 77, 0.5); }
-        p { font-size: 1.05rem; line-height: 1.5; color: #eee; margin-bottom: 15px; }
-        .highlight { color: #ff4d4d; font-weight: bold; }
-        .cake { font-size: 50px; margin: 10px 0; }
+        .page {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 30px;
+            text-align: center;
+            border: 2px solid rgba(255, 77, 77, 0.5);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            display: none; /* Se ocultan por defecto */
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .active { display: block; } /* Solo la página activa se ve */
+
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 20px; /* Estilo más moderno */
+            border: 3px solid #ff4d4d;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        h1 { color: #ff4d4d; font-size: 1.8rem; margin: 10px 0; }
+        p { font-size: 1rem; line-height: 1.4; color: #eee; }
+
+        .btn-next {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
     <div id="overlay">
-        <h2 style="margin-bottom: 20px; font-weight: 300; padding: 0 20px;">Máximo, tienes un mensaje especial...</h2>
-        <button id="start-btn">❤️ Abrir regalo</button>
+        <h2 style="margin-bottom: 20px; font-weight: 300;">Máximo, desliza para leer...</h2>
+        <button id="start-btn">❤️ Abrir carta</button>
     </div>
 
     <canvas id="fireworks"></canvas>
 
-    <div class="card" id="main-card">
-        <img src="maxi.jpeg" alt="Máximo" class="profile-img">
+    <div class="card-container" id="card-container">
         
-        <h1>¡Feliz Cumpleaños, Máximo! 🎂</h1>
-        
-        <p>Querido primo, hoy celebramos no solo un año más de tu vida, sino la suerte de tenerte cerca. Eres una persona increíble y quería que este mensaje fuera tan único como tú.</p>
-        
-        <p>Que la vida te regale siempre motivos para sonreír, metas cumplidas y mucha felicidad. <span class="highlight">¡Gracias por ser un primo y un amigo excepcional!</span></p>
-        
-        <div class="cake">🍰✨</div>
-        <p><strong>¡Disfruta tu día al Máximo!</strong></p>
+        <div class="page active" id="p1">
+            <img src="maxi.jpeg" alt="Máximo 1" class="profile-img">
+            <h1>¡Feliz Cumple, Máximo!</h1>
+            <p>Hoy no es un día cualquiera. Es el día en que el mundo recibió a una persona increíble. Quería que esta sorpresa fuera tan especial como tú.</p>
+            <button class="btn-next" onclick="nextPage(2)">Siguiente →</button>
+        </div>
+
+        <div class="page" id="p2">
+            <img src="maxi2.jpeg" alt="Máximo 2" class="profile-img">
+            <h1>Nuestros Momentos</h1>
+            <p>Gracias por cada risa, cada charla y por ser ese primo en el que siempre se puede confiar. Eres un ejemplo de gran persona y me alegra crecer a tu lado.</p>
+            <button class="btn-next" onclick="nextPage(3)">Siguiente →</button>
+        </div>
+
+        <div class="page" id="p3">
+            <img src="maxi3.jpeg" alt="Máximo 3" class="profile-img">
+            <h1>Un Gran Futuro</h1>
+            <p>Deseo que este año cumplas todas tus metas. Te quiero mucho, primo. ❤️</p>
+            <p style="font-size: 40px;">🎂🍰🎉</p>
+        </div>
+
     </div>
 
-    <audio id="bg-music" loop preload="auto">
+    <audio id="bg-music" loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
 
@@ -63,16 +106,23 @@
         const audio = document.getElementById('bg-music');
         const startBtn = document.getElementById('start-btn');
         const overlay = document.getElementById('overlay');
-        const card = document.getElementById('main-card');
+        const container = document.getElementById('card-container');
 
         startBtn.addEventListener('click', () => {
-            audio.play().catch(error => console.log("Audio bloqueado por el navegador"));
+            audio.play().catch(e => console.log("Audio ok"));
             overlay.style.display = 'none';
-            card.style.display = 'block';
-            animate();
+            container.style.display = 'block';
+            animate(); // Inicia fuegos artificiales
         });
 
-        // --- Lógica de Fuegos Artificiales (Mantenida de tu código) ---
+        function nextPage(num) {
+            // Ocultar todas las páginas
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // Mostrar la seleccionada
+            document.getElementById('p' + num).classList.add('active');
+        }
+
+        // --- Lógica de Fuegos Artificiales (Tu código original) ---
         const canvas = document.getElementById('fireworks');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -94,7 +144,6 @@
                 this.alpha -= 0.012;
             }
         }
-
         let particles = [];
         function createFirework() {
             const x = Math.random() * canvas.width;
@@ -102,7 +151,6 @@
             const color = `hsl(${Math.random() * 360}, 100%, 60%)`;
             for (let i = 0; i < 40; i++) particles.push(new Particle(x, y, color));
         }
-
         function animate() {
             ctx.fillStyle = 'rgba(5, 5, 5, 0.2)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -113,11 +161,6 @@
             });
             requestAnimationFrame(animate);
         }
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
     </script>
 </body>
 </html>
