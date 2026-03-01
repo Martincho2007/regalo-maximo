@@ -11,54 +11,54 @@
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         #start-btn { padding: 20px 50px; font-size: 1.5rem; background: #ff4d4d; color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 0 30px #ff4d4d; z-index: 101; }
 
-        /* Contenedor de la Carta */
         .card-container {
             position: relative;
             z-index: 10;
-            width: 85%;
-            max-width: 350px;
-            min-height: 450px;
+            width: 90%;
+            max-width: 360px;
+            min-height: 550px;
             display: none;
         }
 
         .page {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
-            padding: 25px;
+            padding: 20px;
             border-radius: 30px;
             text-align: center;
             border: 2px solid rgba(255, 77, 77, 0.5);
             box-shadow: 0 0 40px rgba(0,0,0,0.5);
-            display: none; /* Se ocultan por defecto */
-            animation: slideIn 0.5s ease-out;
+            display: none;
+            animation: slideIn 0.6s ease-out;
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .active { display: block; } /* Solo la página activa se ve */
+        .active { display: block; }
 
         .profile-img {
-            width: 180px;
+            width: 100%;
             height: 180px;
-            border-radius: 20px; /* Estilo más moderno */
+            border-radius: 20px;
             border: 3px solid #ff4d4d;
             object-fit: cover;
             margin-bottom: 15px;
         }
 
-        h1 { color: #ff4d4d; font-size: 1.8rem; margin: 10px 0; }
-        p { font-size: 1rem; line-height: 1.4; color: #eee; }
+        h1 { color: #ff4d4d; font-size: 1.5rem; margin: 10px 0; }
+        p { font-size: 0.95rem; line-height: 1.4; color: #eee; margin-bottom: 8px; }
+        .emotivo-text { font-style: italic; color: #ff9999; font-weight: 500; }
 
         .btn-next {
             background: #ff4d4d;
             color: white;
             border: none;
             padding: 10px 25px;
-            border-radius: 20px;
-            margin-top: 15px;
+            border-radius: 25px;
+            margin-top: 10px;
             cursor: pointer;
             font-weight: bold;
         }
@@ -67,8 +67,8 @@
 <body>
 
     <div id="overlay">
-        <h2 style="margin-bottom: 20px; font-weight: 300;">Máximo, desliza para leer...</h2>
-        <button id="start-btn">❤️ Abrir carta</button>
+        <h2 style="margin-bottom: 25px; font-weight: 300; color: #ff4d4d;">Para: Máximo ❤️</h2>
+        <button id="start-btn">🎵 Abrir con música</button>
     </div>
 
     <canvas id="fireworks"></canvas>
@@ -77,23 +77,31 @@
         
         <div class="page active" id="p1">
             <img src="maxi.jpeg" alt="Máximo 1" class="profile-img">
-            <h1>¡Feliz Cumple, Máximo!</h1>
-            <p>Hoy no es un día cualquiera. Es el día en que el mundo recibió a una persona increíble. Quería que esta sorpresa fuera tan especial como tú.</p>
-            <button class="btn-next" onclick="nextPage(2)">Siguiente →</button>
+            <h1>¡Feliz Cumple!</h1>
+            <p>Hoy celebramos tu vida, Primo. Eres una persona con un corazón enorme y te mereces lo mejor del mundo hoy y siempre.</p>
+            <button class="btn-next" onclick="nextPage(2)">Continuar →</button>
         </div>
 
         <div class="page" id="p2">
             <img src="maxi2.jpeg" alt="Máximo 2" class="profile-img">
-            <h1>Nuestros Momentos</h1>
-            <p>Gracias por cada risa, cada charla y por ser ese primo en el que siempre se puede confiar. Eres un ejemplo de gran persona y me alegra crecer a tu lado.</p>
+            <h1>Más que primos</h1>
+            <p>Gracias por todos los momentos compartidos. Valoro muchísimo nuestra amistad y saber que siempre podemos contar el uno con el otro.</p>
             <button class="btn-next" onclick="nextPage(3)">Siguiente →</button>
         </div>
 
         <div class="page" id="p3">
             <img src="maxi3.jpeg" alt="Máximo 3" class="profile-img">
-            <h1>Un Gran Futuro</h1>
-            <p>Deseo que este año cumplas todas tus metas. Te quiero mucho, primo. ❤️</p>
-            <p style="font-size: 40px;">🎂🍰🎉</p>
+            <h1>Consejo</h1>
+            <p class="emotivo-text">"Y recuerda, no necesitas un amor de un padre cuando tienes una familia que te ama, mas que un primo eres un hermano, en cual podemos cuidar y confiar, siempre estaremos para ti en las buenas y en las malas"</p>
+            <button class="btn-next" onclick="nextPage(4)">Una última cosa →</button>
+        </div>
+
+        <div class="page" id="p4">
+            <img src="maxi4.jpeg" alt="Máximo 4" class="profile-img">
+            <h1>¡A disfrutar!</h1>
+            <p>Que este nuevo año de vida esté lleno de éxitos, salud y mucha felicidad. ¡Te queremos mucho, Maximo!</p>
+            <p style="font-size: 40px; margin: 5px 0;">🎉🎂✨</p>
+            <p><strong>¡Feliz Cumpleaños!</strong></p>
         </div>
 
     </div>
@@ -112,17 +120,15 @@
             audio.play().catch(e => console.log("Audio ok"));
             overlay.style.display = 'none';
             container.style.display = 'block';
-            animate(); // Inicia fuegos artificiales
+            animate();
         });
 
         function nextPage(num) {
-            // Ocultar todas las páginas
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            // Mostrar la seleccionada
             document.getElementById('p' + num).classList.add('active');
         }
 
-        // --- Lógica de Fuegos Artificiales (Tu código original) ---
+        // Lógica de Fuegos Artificiales
         const canvas = document.getElementById('fireworks');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -164,4 +170,3 @@
     </script>
 </body>
 </html>
-
