@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>¡Feliz Cumpleaños Máximo!</title>
+    <style>
+        body { margin: 0; background-color: #050505; color: white; font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        canvas { position: absolute; top: 0; left: 0; }
+        
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        #start-btn { padding: 20px 50px; font-size: 1.8rem; background: #ff4d4d; color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 0 30px #ff4d4d; transition: 0.3s; z-index: 101; }
+        #start-btn:hover { transform: scale(1.1); background: #ff2222; }
+        
+        .card { position: relative; z-index: 10; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); padding: 40px; border-radius: 30px; text-align: center; border: 2px solid rgba(255, 77, 77, 0.5); box-shadow: 0 0 40px rgba(0,0,0,0.5); max-width: 400px; display: none; animation: fadeIn 2s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { color: #ff4d4d; font-size: 2.5rem; margin-top: 0; text-shadow: 2px 2px 10px rgba(255, 77, 77, 0.5); }
+        p { font-size: 1.1rem; line-height: 1.6; color: #eee; }
+        .cake { font-size: 60px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <div id="overlay">
+        <h2 style="margin-bottom: 20px; font-weight: 300;">Máximo, tienes un mensaje...</h2>
+        <button id="start-btn">❤️ Abrir regalo</button>
+    </div>
+
+    <canvas id="fireworks"></canvas>
+
+    <div class="card" id="main-card">
+        <h1>¡Feliz Cumpleaños, Máximo! 🎂</h1>
+        <div class="cake">🍰✨</div>
+        <p>Querido primo,<br> 
+        Hoy es un día especial y quería saludarte de una forma diferente. ¡Espero que pases un cumple increíble!</p>
+        <p><strong>¡Disfruta tu día al máximo!</strong></p>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="file:///C:/Users/Admin/Desktop/maximo/musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById('bg-music');
+        const startBtn = document.getElementById('start-btn');
+        const overlay = document.getElementById('overlay');
+        const card = document.getElementById('main-card');
+
+        startBtn.addEventListener('click', () => {
+            // Reproducir música
+            audio.play().catch(error => {
+                console.error("No se pudo cargar el archivo en la ruta especificada:", error);
+                alert("Asegúrate de que el archivo musica.mp3 esté en la carpeta del escritorio.");
+            });
+            
+            // Mostrar carta y ocultar botón
+            overlay.style.display = 'none';
+            card.style.display = 'block';
+            
+            // Iniciar fuegos artificiales
+            animate();
+        });
+
+        // Lógica de Fuegos Artificiales
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y; this.color = color;
+                this.velocity = { x: (Math.random() - 0.5) * 6, y: (Math.random() - 0.5) * 6 };
+                this.alpha = 1;
+            }
+            draw() {
+                ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = this.color; ctx.fill(); ctx.restore();
+            }
+            update() {
+                this.velocity.y += 0.05; this.x += this.velocity.x; this.y += this.velocity.y;
+                this.alpha -= 0.012;
+            }
+        }
+
+        let particles = [];
+        function createFirework() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * (canvas.height * 0.6);
+            const color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+            for (let i = 0; i < 40; i++) particles.push(new Particle(x, y, color));
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (Math.random() < 0.06) createFirework();
+            particles.forEach((p, i) => {
+                if (p.alpha > 0) { p.update(); p.draw(); } 
+                else { particles.splice(i, 1); }
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
